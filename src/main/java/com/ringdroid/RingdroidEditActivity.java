@@ -278,6 +278,7 @@ public class RingdroidEditActivity extends AppCompatActivity
         return true;
     }
 
+    /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
@@ -296,6 +297,27 @@ public class RingdroidEditActivity extends AppCompatActivity
             return false;
         }
     }
+    */
+    private final Toolbar.OnMenuItemClickListener mOnMenuItemsClick = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            int i = item.getItemId();
+            if (i == R.id.action_save) {
+                onSave();
+                return true;
+            } else if (i == R.id.action_reset) {
+                resetPositions();
+                mOffsetGoal = 0;
+                updateDisplay();
+                return true;
+            } else if (i == R.id.action_about) {
+                onAbout(RingdroidEditActivity.this);
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -541,6 +563,9 @@ public class RingdroidEditActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.main_activity_label);
         setSupportActionBar(toolbar);
+
+        //Must set after setSupportActionBar
+        toolbar.setOnMenuItemClickListener(mOnMenuItemsClick);
 
         mMarkerLeftInset = (int)(46 * mDensity);
         mMarkerRightInset = (int)(48 * mDensity);
